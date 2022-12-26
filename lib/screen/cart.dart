@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class CardList extends StatelessWidget {
+class Cart extends StatelessWidget {
   final List? data;
 
-  const CardList(this.data);
+  const Cart({this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,7 @@ class CardList extends StatelessWidget {
                                 ),
                                 Row(children: [
                                   ElevatedButton(
-                                    child: Text("Add to cart"),
+                                    child: Text("Remove"),
                                     onPressed: () {},
                                   ),
                                   Padding(

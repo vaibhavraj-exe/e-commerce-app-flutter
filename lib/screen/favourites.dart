@@ -1,11 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class CardList extends StatelessWidget {
+class Fav extends StatefulWidget {
   final List? data;
 
-  const CardList(this.data);
+  const Fav({this.data});
+  @override
+  State<Fav> createState() => _FavState();
+}
+
+class _FavState extends State<Fav> {
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +23,15 @@ class CardList extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed("/cart", arguments: data);
+                Navigator.of(context)
+                    .pushNamed("/cart", arguments: widget.data);
               },
               icon: const Icon(Icons.shopping_cart))
         ],
       ),
       backgroundColor: const Color(0xff151319),
       body: ListView.builder(
-          itemCount: data!.length,
+          itemCount: widget.data!.length,
           itemBuilder: ((context, index) => Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
@@ -46,7 +54,7 @@ class CardList extends StatelessWidget {
                           clipBehavior: Clip.hardEdge,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(7),
-                            child: Image.network(data![index]["image"]),
+                            child: Image.network(widget.data![index]["image"]),
                           ),
                         ),
                         Container(
@@ -57,7 +65,7 @@ class CardList extends StatelessWidget {
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(0, 2, 0, 10),
                                   child: Text(
-                                    data![index]["name"],
+                                    widget.data![index]["name"],
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontSize: 20,
@@ -69,7 +77,8 @@ class CardList extends StatelessWidget {
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                   child: Text(
-                                    "Rs." + data![index]["price"].toString(),
+                                    "Rs." +
+                                        widget.data![index]["price"].toString(),
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontSize: 24,
@@ -79,15 +88,11 @@ class CardList extends StatelessWidget {
                                   ),
                                 ),
                                 Row(children: [
-                                  ElevatedButton(
-                                    child: Text("Add to cart"),
-                                    onPressed: () {},
-                                  ),
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
                                     child: ElevatedButton(
                                         onPressed: () {},
-                                        child: Icon(Icons.star_border)),
+                                        child: Icon(Icons.star)),
                                   ),
                                 ])
                               ]),
@@ -95,6 +100,35 @@ class CardList extends StatelessWidget {
                       ],
                     )),
               ))),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+            ),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.star_border), label: "Favourites")
+        ],
+        backgroundColor: Color(0xfffd644e),
+        selectedItemColor: Colors.white,
+        onTap: ((index) => setState(() {
+              selectedIndex = index;
+              switch (index) {
+                case 0:
+                  Navigator.of(context)
+                      .pushNamed("/home", arguments: widget.data);
+                  break;
+                case 1:
+                  Navigator.of(context)
+                      .pushNamed("/favourites", arguments: widget.data);
+                  break;
+                default:
+              }
+            })),
+        currentIndex: selectedIndex,
+      ),
     );
   }
 }
