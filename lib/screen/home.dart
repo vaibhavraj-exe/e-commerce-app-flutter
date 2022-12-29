@@ -13,15 +13,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int selectedIndex = 0;
-
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     selectedIndex = index;
-  //   });
-  // }
+  List favourites = [];
 
   @override
   Widget build(BuildContext context) {
+    List displayList = widget.data!;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
@@ -30,14 +26,14 @@ class _HomeState extends State<Home> {
           IconButton(
               onPressed: () {
                 Navigator.of(context)
-                    .pushNamed("/cart", arguments: widget.data);
+                    .pushNamed("/cart", arguments: displayList);
               },
               icon: const Icon(Icons.shopping_cart))
         ],
       ),
       backgroundColor: const Color(0xff151319),
       body: ListView.builder(
-          itemCount: widget.data!.length,
+          itemCount: displayList!.length,
           itemBuilder: ((context, index) => Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
@@ -60,7 +56,7 @@ class _HomeState extends State<Home> {
                           clipBehavior: Clip.hardEdge,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(7),
-                            child: Image.network(widget.data![index]["image"]),
+                            child: Image.network(displayList![index]["image"]),
                           ),
                         ),
                         Container(
@@ -71,7 +67,7 @@ class _HomeState extends State<Home> {
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(0, 2, 0, 10),
                                   child: Text(
-                                    widget.data![index]["name"],
+                                    displayList![index]["name"],
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontSize: 20,
@@ -84,7 +80,7 @@ class _HomeState extends State<Home> {
                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                   child: Text(
                                     "Rs." +
-                                        widget.data![index]["price"].toString(),
+                                        displayList![index]["price"].toString(),
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontSize: 24,
@@ -101,7 +97,9 @@ class _HomeState extends State<Home> {
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
                                     child: ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          favourites.add(displayList![index]);
+                                        },
                                         child: Icon(Icons.star_border)),
                                   ),
                                 ])
@@ -127,12 +125,12 @@ class _HomeState extends State<Home> {
               selectedIndex = index;
               switch (index) {
                 case 0:
-                  Navigator.of(context)
-                      .pushNamed("/home", arguments: widget.data);
+                  displayList = widget.data!;
+                  print("Show All");
                   break;
                 case 1:
-                  Navigator.of(context)
-                      .pushNamed("/favourites", arguments: widget.data);
+                  displayList = favourites;
+                  print("Show Favourites");
                   break;
                 default:
               }

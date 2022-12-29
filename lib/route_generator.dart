@@ -1,5 +1,4 @@
 import 'package:e_commerce_app/screen/cart.dart';
-import 'package:e_commerce_app/screen/favourites.dart';
 import 'package:e_commerce_app/screen/home.dart';
 import 'package:e_commerce_app/screen/splash.dart';
 import 'package:flutter/material.dart';
@@ -19,11 +18,6 @@ class RouteGenerator {
       case "/cart":
         if (args is List) {
           return MaterialPageRoute(builder: ((context) => Cart(data: args)));
-        }
-        break;
-      case "/favourites":
-        if (args is List) {
-          return MaterialPageRoute(builder: ((context) => Fav(data: args)));
         }
         break;
       default:
