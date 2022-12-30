@@ -14,10 +14,25 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int selectedIndex = 0;
   List favourites = [];
+  List displayList = [];
+  bool isHome = true;
+
+  // setDisplayListHome() {
+  //   displayList = widget.data!;
+  // }
+
+  // setDisplayListFav() {
+  //   displayList = favourites;
+  // }
 
   @override
   Widget build(BuildContext context) {
-    List displayList = widget.data!;
+    if (isHome) {
+      displayList = widget.data!;
+    } else {
+      displayList = favourites;
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
@@ -98,7 +113,27 @@ class _HomeState extends State<Home> {
                                     padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
                                     child: ElevatedButton(
                                         onPressed: () {
-                                          favourites.add(displayList![index]);
+                                          if (favourites.length == 0) {
+                                            favourites.add(displayList![index]);
+                                          } else {
+                                            for (var element in favourites) {
+                                              if (element["product_id"] ==
+                                                  displayList[index]
+                                                      ["product_id"]) {
+                                                print("Already in fav");
+                                                break;
+                                              } else if (element[
+                                                      "product_id"] ==
+                                                  favourites[favourites.length -
+                                                      1]["product_id"]) {
+                                                favourites
+                                                    .add(displayList![index]);
+                                                print("add to fav");
+                                                break;
+                                              }
+                                            }
+                                            ;
+                                          }
                                         },
                                         child: Icon(Icons.star_border)),
                                   ),
@@ -125,12 +160,13 @@ class _HomeState extends State<Home> {
               selectedIndex = index;
               switch (index) {
                 case 0:
-                  displayList = widget.data!;
+                  isHome = true;
                   print("Show All");
                   break;
                 case 1:
-                  displayList = favourites;
+                  isHome = false;
                   print("Show Favourites");
+                  // print(displayList);
                   break;
                 default:
               }
