@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
       ),
       backgroundColor: const Color(0xff151319),
       body: ListView.builder(
-          itemCount: displayList!.length,
+          itemCount: displayList.length,
           itemBuilder: ((context, index) => Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
@@ -79,7 +79,7 @@ class _HomeState extends State<Home> {
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(0, 2, 0, 10),
                                   child: Text(
-                                    displayList![index]["name"],
+                                    displayList[index]["name"],
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontSize: 20,

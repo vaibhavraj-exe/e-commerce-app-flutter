@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class Cart extends StatelessWidget {
+class Cart extends StatefulWidget {
   final List? data;
 
   const Cart({this.data});
 
+  @override
+  State<Cart> createState() => _CartState();
+}
+
+class _CartState extends State<Cart> {
   String returnTotal(List prods) {
     num total = 0;
     prods.forEach((element) {
@@ -14,6 +19,14 @@ class Cart extends StatelessWidget {
     });
 
     return total.toString();
+  }
+
+  removeFromCart(i, list) {
+    if (list != []) {
+      setState(() {
+        list!.remove(list![i]);
+      });
+    }
   }
 
   @override
@@ -32,7 +45,7 @@ class Cart extends StatelessWidget {
       ),
       backgroundColor: const Color(0xff151319),
       body: ListView.builder(
-          itemCount: data!.length,
+          itemCount: widget.data!.length,
           itemBuilder: ((context, index) => Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
@@ -68,7 +81,7 @@ class Cart extends StatelessWidget {
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(0, 2, 0, 10),
                                   child: Text(
-                                    data![index]["name"],
+                                    widget.data![index]["name"],
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontSize: 20,
@@ -80,7 +93,8 @@ class Cart extends StatelessWidget {
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                   child: Text(
-                                    "Rs." + data![index]["price"].toString(),
+                                    "Rs." +
+                                        widget.data![index]["price"].toString(),
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontSize: 24,
@@ -92,9 +106,8 @@ class Cart extends StatelessWidget {
                                 Row(children: [
                                   ElevatedButton(
                                     child: Text("Remove"),
-                                    onPressed: () {
-                                      data!.remove(data![index]);
-                                    },
+                                    onPressed: (() =>
+                                        removeFromCart(index, widget.data)),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
@@ -123,7 +136,7 @@ class Cart extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
                   child: Text(
-                    "Rs. " + returnTotal(data!),
+                    "Rs. " + returnTotal(widget.data!),
                     style: TextStyle(fontSize: 25, color: Colors.black87),
                   ))
             ]),
