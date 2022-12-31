@@ -7,18 +7,27 @@ class Cart extends StatelessWidget {
 
   const Cart({this.data});
 
+  String returnTotal(List prods) {
+    num total = 0;
+    prods.forEach((element) {
+      total += element["price"];
+    });
+
+    return total.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
-        title: Text("KZilla Store"),
+        title: Text("Your Cart"),
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed("/cart", arguments: data);
+                Navigator.pop(context);
               },
-              icon: const Icon(Icons.shopping_cart))
+              icon: const Icon(Icons.home))
         ],
       ),
       backgroundColor: const Color(0xff151319),
@@ -46,7 +55,9 @@ class Cart extends StatelessWidget {
                           clipBehavior: Clip.hardEdge,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(7),
-                            child: Image.network(data![index]["image"]),
+                            // child: Image.network(data![index]["image"]),
+                            child: Image.network(
+                                "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aGVhZHBob25lc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"),
                           ),
                         ),
                         Container(
@@ -81,7 +92,9 @@ class Cart extends StatelessWidget {
                                 Row(children: [
                                   ElevatedButton(
                                     child: Text("Remove"),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      data!.remove(data![index]);
+                                    },
                                   ),
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
@@ -95,6 +108,40 @@ class Cart extends StatelessWidget {
                       ],
                     )),
               ))),
+      bottomNavigationBar: Container(
+        height: 70,
+        color: Color(0xfffd644e),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                "Total",
+              ),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                  child: Text(
+                    "Rs. " + returnTotal(data!),
+                    style: TextStyle(fontSize: 25, color: Colors.black87),
+                  ))
+            ]),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Text(
+                "Place Order",
+                style: TextStyle(color: Colors.grey[800]),
+              ),
+              style:
+                  ElevatedButton.styleFrom(backgroundColor: Colors.green[300]),
+            ),
+          )
+        ]),
+      ),
     );
   }
 }

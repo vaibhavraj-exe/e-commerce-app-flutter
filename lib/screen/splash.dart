@@ -18,6 +18,7 @@ class Splash extends StatelessWidget {
         await http.get(Uri.parse("https://shopping-api.deta.dev/products/all"));
     List data = jsonDecode(response.body)["data"];
 
+    // debugPrint(data.toString());
     return data;
   }
 

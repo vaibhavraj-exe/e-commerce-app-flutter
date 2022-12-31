@@ -7,6 +7,7 @@ class Home extends StatefulWidget {
   final List? data;
 
   const Home({this.data});
+
   @override
   State<Home> createState() => _HomeState();
 }
@@ -15,15 +16,8 @@ class _HomeState extends State<Home> {
   int selectedIndex = 0;
   List favourites = [];
   List displayList = [];
+  List cartList = [];
   bool isHome = true;
-
-  // setDisplayListHome() {
-  //   displayList = widget.data!;
-  // }
-
-  // setDisplayListFav() {
-  //   displayList = favourites;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +27,8 @@ class _HomeState extends State<Home> {
       displayList = favourites;
     }
 
+    // debugPrint(displayList[0]["image"].toString());
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
@@ -40,8 +36,7 @@ class _HomeState extends State<Home> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context)
-                    .pushNamed("/cart", arguments: displayList);
+                Navigator.of(context).pushNamed("/cart", arguments: cartList);
               },
               icon: const Icon(Icons.shopping_cart))
         ],
@@ -71,7 +66,9 @@ class _HomeState extends State<Home> {
                           clipBehavior: Clip.hardEdge,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(7),
-                            child: Image.network(displayList![index]["image"]),
+                            // child: Image.network(displayList[index]["image"]),
+                            child: Image.network(
+                                "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aGVhZHBob25lc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"),
                           ),
                         ),
                         Container(
@@ -95,7 +92,7 @@ class _HomeState extends State<Home> {
                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                   child: Text(
                                     "Rs." +
-                                        displayList![index]["price"].toString(),
+                                        displayList[index]["price"].toString(),
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontSize: 24,
@@ -107,28 +104,28 @@ class _HomeState extends State<Home> {
                                 Row(children: [
                                   ElevatedButton(
                                     child: Text("Add to cart"),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      cartList.add(displayList[index]);
+                                    },
                                   ),
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
                                     child: ElevatedButton(
                                         onPressed: () {
                                           if (favourites.length == 0) {
-                                            favourites.add(displayList![index]);
+                                            favourites.add(displayList[index]);
                                           } else {
                                             for (var element in favourites) {
                                               if (element["product_id"] ==
                                                   displayList[index]
                                                       ["product_id"]) {
-                                                print("Already in fav");
                                                 break;
                                               } else if (element[
                                                       "product_id"] ==
                                                   favourites[favourites.length -
                                                       1]["product_id"]) {
                                                 favourites
-                                                    .add(displayList![index]);
-                                                print("add to fav");
+                                                    .add(displayList[index]);
                                                 break;
                                               }
                                             }
